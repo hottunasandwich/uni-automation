@@ -14,12 +14,14 @@ class Golestan:
             path.join(path.dirname(__file__), 'chromedriver.exe'))
         self.driver.delete_all_cookies()
         self.waiter = WebDriverWait(self.driver, 10)
-        self.driver.get("https://golestan.sbu.ac.ir/Forms/AuthenticateUser/main.htm")
         self.username = username
         self.password = password
         self.units = units
+        self.time = '9:00:00'
 
     def fillT01rows(self):
+        print(self.toSeconds(self.time) - self.toSeconds(self.getSiteTime()))
+        sleep(self.toSeconds(self.time) - self.toSeconds(self.getSiteTime()))
         self.driver.switch_to.default_content()
         self.waiter.until(
             EC.frame_to_be_available_and_switch_to_it((By.XPATH, '/html/body/div/iframe')))
@@ -27,7 +29,6 @@ class Golestan:
             EC.frame_to_be_available_and_switch_to_it((By.NAME, 'Master')))
         self.waiter.until(
             EC.frame_to_be_available_and_switch_to_it((By.NAME, 'Form_Body')))
-        sleep(5)
         counter = 0
         for i in self.units:
             script0 = 'window.frames[2].frames["Master"].frames["Form_Body"]'
@@ -51,8 +52,11 @@ class Golestan:
             self.driver.execute_script(script4)
             counter += 1
         return self
-
+    def setTime(self,time):
+        self.time = time
     def login(self):
+        self.driver.get(
+            "https://golestan.sbu.ac.ir/Forms/AuthenticateUser/main.htm")
         inLogin = True
         while (inLogin):
             try:
@@ -107,3 +111,13 @@ class Golestan:
                 time = True
         return self
 
+    def getSiteTime(self):
+        self.driver.switch_to.default_content()
+        time = self.waiter.until(EC.visibility_of_element_located(
+            (By.CSS_SELECTOR, '#\_mt_bou > div:nth-child(5)'))).text
+        return time.split(' ')[0]
+    def toSeconds(self,t):
+        h = int(t.split(':')[0])
+        m = int(t.split(':')[1])
+        s = int(t.split(':')[2])
+        return h *3600 + m *60 + s
