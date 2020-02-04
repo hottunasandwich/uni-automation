@@ -1,4 +1,4 @@
-#Fuck Golestan
+# Fuck Golestan
 
 It's a robot for [Golestan](http://golestan.sbu.ac.ir) Automation with its shitty website.
 
@@ -6,26 +6,26 @@ It's a robot for [Golestan](http://golestan.sbu.ac.ir) Automation with its shitt
 
 For installation you can simply clone it.
 
-###### * First step
+* ###### First step
 
 Install Python on your machine you should know how ;)
 
-###### * Second step 
+* ###### Second step 
 
 Install selenium package
 `pip install selenium`
 or
 `py -m pip intall selenium`
 
-###### * Third step
+* ###### Third step
 
 Make sure `chromedriver.exe` matches your chrome version, mine was _79.0.3945.130 (Official Build) (64-bit)_
 
-###### * Fourth step
+* ###### Fourth step
 
   - Replace your _username_ and _password_ with the one in `robot.py`
   - Replace your _units_ as a list in `robot.py` as mentioned
-#How to run
+# How to run
 
 Simply enter code below in your cmd opened in the same directory that you have cloned the project.
 `py robot.py`
