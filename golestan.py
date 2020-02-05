@@ -7,9 +7,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import events
 from time import sleep
 from selenium.common.exceptions import TimeoutException
-#enter unit ids that you want to take first
+# enter unit ids that you want to take first
+
+
 class Golestan:
-    def __init__(self,username,password,units):
+    def __init__(self, username, password, units):
         self.driver = webdriver.Chrome(
             path.join(path.dirname(__file__), 'chromedriver.exe'))
         self.driver.delete_all_cookies()
@@ -17,11 +19,9 @@ class Golestan:
         self.username = username
         self.password = password
         self.units = units
-        self.time = '9:00:00'
+        self.time = '14:29:00'
 
     def fillT01rows(self):
-        print(self.toSeconds(self.time) - self.toSeconds(self.getSiteTime()))
-        sleep(self.toSeconds(self.time) - self.toSeconds(self.getSiteTime()))
         self.driver.switch_to.default_content()
         self.waiter.until(
             EC.frame_to_be_available_and_switch_to_it((By.XPATH, '/html/body/div/iframe')))
@@ -30,6 +30,7 @@ class Golestan:
         self.waiter.until(
             EC.frame_to_be_available_and_switch_to_it((By.NAME, 'Form_Body')))
         counter = 0
+        sleep(5)
         for i in self.units:
             script0 = 'window.frames[2].frames["Master"].frames["Form_Body"]'
             script1 = script0 + '.' + \
@@ -52,8 +53,11 @@ class Golestan:
             self.driver.execute_script(script4)
             counter += 1
         return self
-    def setTime(self,time):
+
+    def setTime(self, time):
         self.time = time
+        return self
+
     def login(self):
         self.driver.get(
             "https://golestan.sbu.ac.ir/Forms/AuthenticateUser/main.htm")
@@ -68,7 +72,8 @@ class Golestan:
                     EC.frame_to_be_available_and_switch_to_it((By.NAME, 'Form_Body')))
                 self.waiter.until(EC.element_to_be_clickable(
                     (By.ID, 'F80351'))).send_keys(self.username)
-                self.driver.find_element_by_id('F80401').send_keys(self.password + Keys.ENTER)
+                self.driver.find_element_by_id(
+                    'F80401').send_keys(self.password + Keys.ENTER)
                 inLogin = False
             except TimeoutException:
                 inLogin = True
@@ -92,6 +97,10 @@ class Golestan:
         return self
 
     def goToMainEntekhaabVahed(self):
+        x = self.toSeconds(self.time) - \
+            self.toSeconds(self.getSiteTime())
+        print(x)
+        sleep(x)
         time = True
         while(time):
             try:
@@ -116,8 +125,9 @@ class Golestan:
         time = self.waiter.until(EC.visibility_of_element_located(
             (By.CSS_SELECTOR, '#\_mt_bou > div:nth-child(5)'))).text
         return time.split(' ')[0]
-    def toSeconds(self,t):
+
+    def toSeconds(self, t):
         h = int(t.split(':')[0])
         m = int(t.split(':')[1])
         s = int(t.split(':')[2])
-        return h *3600 + m *60 + s
+        return h * 3600 + m * 60 + s
