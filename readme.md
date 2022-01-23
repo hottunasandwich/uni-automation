@@ -1,6 +1,6 @@
-# Fuck Golestan
+# Golestan
 
-It's a robot for [Golestan](http://golestan.sbu.ac.ir) Automation with its shitty website.
+It's a robot for [Golestan](http://golestan.sbu.ac.ir) Automation with its website.
 
 ### Installation 
 
